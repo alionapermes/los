@@ -1,0 +1,85 @@
+﻿@page
+@model los.Pages.UserOrdersModel
+
+<style>
+  table, td, th {
+    border: 1px solid black;
+    padding: 4px;
+  }
+
+  label {
+    padding: 4px;
+  }
+
+  input {
+    padding: 2px;
+  }
+
+  .crud-form {
+    border: 1px solid black;
+    padding: 10px;
+  }
+</style>
+
+@* <div class="text-center">
+  <h4>База книг в библиотеке</h1>
+  <p><a href="?download_xml=1" download>Скачать таблицу в xml</a></p>
+  <p><a href="?remove_all=1">Очистить таблицу</a></p>
+  <form method="post" enctype="multipart/form-data">
+    <input type="file" asp-for="Upload">
+    <input type="submit" value="Восстановить таблицу из xml">
+  </form>
+</div>
+
+<div class="crud-form">
+  <p>Форма добавления</p>
+  <form method="post">
+    <label>Название:<input type="text" asp-for="InputInsertTitle"></label>
+    <label>Автор:<input type="text" asp-for="InputInsertAuthor"></label>
+    <label>Жанр:<input type="text" asp-for="InputInsertGenre"></label>
+    <input type="hidden" asp-for="LabAction" value="insert">
+    <input type="submit" value="Добавить">
+  </form>
+</div>
+
+<div class="crud-form">
+  <p>Форма изменения</p>
+  <form method="post">
+    <label>ID:<input type="text" asp-for="InputUpdateID"></label>
+    <label>Название:<input type="text" asp-for="InputUpdateTitle"></label>
+    <label>Автор:<input type="text" asp-for="InputUpdateAuthor"></label>
+    <label>Жанр:<input type="text" asp-for="InputUpdateGenre"></label>
+    <input type="hidden" asp-for="LabAction" value="update">
+    <input type="submit" value="Изменить">
+  </form>
+</div>
+
+<div class="crud-form">
+  <p>Форма Удаления</p>
+  <form method="post">
+    <label>ID:<input type="text" asp-for="InputDeleteID"></label>
+    <input type="hidden" asp-for="LabAction" value="delete">
+    <input type="submit" value="Удалить">
+  </form>
+</div> *@
+
+<h2>My orders</h2>
+<table>
+  <tr>
+    <th>#</th>
+    <th>Book</th>
+    <th>Ordered On</th>
+    <th>Arrives On</th>
+    <th colspan="2">Action</th>
+  </tr>
+  @foreach (var order in @Model.GetAllOrders()) {
+  <tr>
+    <td>@order.ID</td>
+    <td>@order.Book</td>
+    <td>@order.OrderedOn.ToString("dd.MM.yy")</td>
+    <td>@order.ArrivesOn.ToString("dd.MM.yy")</td>
+    <td><a href="/UserEditOrder?id=@order.ID">edit</a></td>
+    <td><a href="/UserCancelOrder?id=@order.ID">cancel</a></td>
+  </tr>
+  }
+</table>

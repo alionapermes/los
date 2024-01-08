@@ -1,0 +1,21 @@
+﻿@page
+@model los.Pages.AdminEditOrderModel
+
+<div class="crud-form">
+  <h2>Edit order #@Model.InputID</h2>
+  <form method="post">
+    <input type="hidden" asp-for="InputID">
+    <label>User name:<input type="text" asp-for="InputUserName"></label>
+    <label>Book:
+      <select asp-for="InputBookID">
+        @foreach (var book in @Model.GetAllBooks()) {
+          bool isSelected = @Model.InputBookID != null && @Model.InputBookID == book.ID;
+          <!option value="@book.ID" @(isSelected ? "selected" : "")>@book.Title</!option>
+        }
+      </select>
+    </label>
+    <label>Ordering date:<input type="text" asp-for="InputOrderedOn" value="@Model.InputOrderedOn"></label>
+    <label>Arriving date:<input type="text" asp-for="InputArrivesOn" value="@Model.InputArrivesOn"></label>
+    <input type="submit" value="save">
+  </form>
+</div>

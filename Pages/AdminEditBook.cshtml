@@ -1,0 +1,11 @@
+﻿@page
+@model los.Pages.AdminEditBookModel
+
+<div class="crud-form">
+  <p>Edit book #@Model.InputID</p>
+  <form method="post">
+    <input type="hidden" asp-for="InputID">
+    <label>Title:<input type="text" asp-for="InputTitle"></label>
+    <input type="submit" value="save">
+  </form>
+</div>

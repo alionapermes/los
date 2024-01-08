@@ -1,0 +1,14 @@
+﻿@page
+@model los.Pages.UserEditOrderModel
+
+<div class="crud-form">
+  <h2>Edit order #@Request.Query["id"]</h2>
+  <form method="post">
+    @* <label>ID:<input type="text" asp-for="InputUpdateID"></label>
+    <label>Название:<input type="text" asp-for="InputUpdateTitle"></label>
+    <label>Автор:<input type="text" asp-for="InputUpdateAuthor"></label>
+    <label>Жанр:<input type="text" asp-for="InputUpdateGenre"></label>
+    <input type="hidden" asp-for="LabAction" value="update"> *@
+    <input type="submit" value="Изменить">
+  </form>
+</div>

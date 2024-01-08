@@ -1,0 +1,72 @@
+﻿@page
+@model los.Pages.AdminOrdersModel
+
+<style>
+  table, td, th {
+    border: 1px solid black;
+    padding: 4px;
+  }
+
+  label {
+    padding: 4px;
+  }
+
+  input {
+    padding: 2px;
+  }
+
+  .crud-form {
+    border: 1px solid black;
+    padding: 10px;
+  }
+</style>
+
+<div class="crud-form">
+  <p>Add new order</p>
+  @if (!string.IsNullOrEmpty(@Model.ErrMsg)) {
+    <p>Error: @Model.ErrMsg</p>
+  }
+  <form method="post">
+    <input type="hidden" asp-for="ActionType" value="insert">
+    <label>User name:<input type="text" asp-for="InputUserName"></label>
+    <label>Book:
+      <select asp-for="InputBookID">
+        @foreach (var book in @Model.GetAllBooks()) {
+        <option value="@book.ID">@book.Title</option>
+        }
+      </select>
+    </label>
+    <label>Ordering date:<input type="text" asp-for="InputOrderedOn"></label>
+    <label>Arriving date:<input type="text" asp-for="InputArrivesOn"></label>
+    <input type="submit" value="add">
+  </form>
+</div>
+
+<h2>All orders</h2>
+<table>
+  <tr>
+    <th>#</th>
+    <th>User</th>
+    <th>Book</th>
+    <th>Ordered on</th>
+    <th>Arrives on</th>
+    <th colspan="2">Action</th>
+  </tr>
+  @foreach (var order in @Model.GetAllOrders()) {
+  <tr>
+    <td>@order.ID</td>
+    <td>@order.UserName</td>
+    <td>@order.Book.Title</td>
+    <td>@order.OrderedOn.ToString(@Model.DateFormat)</td>
+    <td>@order.ArrivesOn.ToString(@Model.DateFormat)</td>
+    <td><a href="/AdminEditOrder?id=@order.ID">edit</a></td>
+    <td>
+      <form method="post">
+        <input type="hidden" asp-for="ActionType" value="remove">
+        <input type="hidden" asp-for="InputID" value="@order.ID">
+        <input type="submit" value="remove">
+      </form>
+    </td>
+  </tr>
+  }
+</table>
