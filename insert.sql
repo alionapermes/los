@@ -1,4 +1,4 @@
-INSERT INTO "genre" VALUES("title")
+INSERT INTO "genre"("title") VALUES
   ('mistery'),
   ('fantasy'),
   ('horror'),
@@ -15,7 +15,7 @@ INSERT INTO "genre" VALUES("title")
   ('science fiction'),
   ('paranormal');
 
-INSERT INTO "authors" VALUES("fullname")
+INSERT INTO "author"("fullname") VALUES
   ('Arthur Conan Doyle'),
   ('Oscar Wilde'),
   ('Howard Phillips Lovecraft'),

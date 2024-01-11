@@ -1,6 +1,26 @@
 ﻿@page
 @model los.Pages.AdminEditOrderModel
 
+<style>
+  table, td, th {
+    border: 1px solid black;
+    padding: 4px;
+  }
+
+  label {
+    padding: 4px;
+  }
+
+  input {
+    padding: 2px;
+  }
+
+  .crud-form {
+    border: 1px solid black;
+    padding: 10px;
+  }
+</style>
+
 <div class="crud-form">
   <h2>Edit order #@Model.InputID</h2>
   <form method="post">

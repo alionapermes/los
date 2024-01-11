@@ -35,9 +35,4 @@ public class Order
   ) : this(secretCode, user, book, orderedOn, arrivedOn) {
     this.ID = id;
   }
-
-  public Order(Int64 id)
-  {
-    this.ID = id;
-  }
 }

@@ -57,6 +57,9 @@ public class AdminOrdersModel : PageModel
 
     public void addOrder()
     {
+        User user;
+        Book book;
+
         Int64 bookID = InputBookID ?? 0;
         if (bookID < 0) {
             Console.WriteLine("addOrder: incorrect book id");
@@ -98,8 +101,8 @@ public class AdminOrdersModel : PageModel
             return;
         }
 
-        var book = new Book(bookID);
-        var user = new User(userID);
+        book = BooksData.GetByID(_dataSource, bookID);
+        user = UsersData.GetByID(_dataSource, userID);
         var order = new Order(InputSecretCode, user, book, orderedOn, arrivesOn);
 
         OrdersData.Add(_dataSource, order);
@@ -113,11 +116,6 @@ public class AdminOrdersModel : PageModel
             return;
         }
 
-        var sql = "DELETE FROM \"order\" WHERE id = @id";
-
-        using (var cmd = _dataSource.CreateCommand(sql)) {
-            cmd.Parameters.AddWithValue("id", orderID);
-            cmd.ExecuteNonQuery();
-        }
+        OrdersData.DeleteByID(_dataSource, orderID);
     }
 }

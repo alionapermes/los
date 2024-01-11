@@ -53,17 +53,35 @@ public class AdminBooksModel : PageModel
 
     private void addBook()
     {
+        Genre? genre = null;
+        Author author;
+
         if (string.IsNullOrEmpty(InputTitle)) {
             Console.WriteLine("addBook: epmty title");
             return;
         }
 
-        var sql = "INSERT INTO book (title) VALUES (@title)";
-
-        using (var cmd = _dataSource.CreateCommand(sql)) {
-            cmd.Parameters.AddWithValue("title", InputTitle);
-            cmd.ExecuteNonQuery();
+        Int32 year = InputYear ?? 0;
+        if (year > DateTime.Today.Year) {
+            Console.WriteLine("AdminEditBook.OnPost: incorrect year");
+            return;
         }
+
+        Int64 authorID = InputAuthorID ?? 0;
+        if (authorID <= 0) {
+            Console.WriteLine("AdminEditBook.OnPost: incorrect author id");
+            return;
+        }
+
+        Int64 genreID = InputGenreID ?? 0;
+        if (genreID > 0) {
+            genre = GenresData.GetByID(_dataSource, genreID);
+        }
+
+        author = AuthorsData.GetByID(_dataSource, authorID);
+        var book = new Book(InputTitle, year, author, genre);
+
+        BooksData.Add(_dataSource, book);
     }
 
     public void removeBook()
@@ -74,11 +92,6 @@ public class AdminBooksModel : PageModel
             return;
         }
 
-        var sql = "DELETE FROM book WHERE id = @id";
-
-        using (var cmd = _dataSource.CreateCommand(sql)) {
-            cmd.Parameters.AddWithValue("id", bookID);
-            cmd.ExecuteNonQuery();
-        }
+        BooksData.DeleteByID(_dataSource, bookID);
     }
 }

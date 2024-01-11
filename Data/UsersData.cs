@@ -11,7 +11,7 @@ public class UsersData
   public static List<User> GetAll(NpgsqlDataSource dataSource)
   {
     var users = new List<User>();
-    var sql = "SELECT id, name FROM user";
+    var sql = "SELECT id, name FROM \"user\"";
 
     using (var cmd = dataSource.CreateCommand(sql))
     using (var reader = cmd.ExecuteReader()) {
@@ -44,7 +44,7 @@ public class UsersData
 
   public static void Update(NpgsqlDataSource dataSource, User user)
   {
-    var sql = "UPDATE \"user\" SET name = @name, WHERE id = @id";
+    var sql = "UPDATE \"user\" SET name = @name WHERE id = @id";
 
     using (var cmd = dataSource.CreateCommand(sql)) {
       cmd.Parameters.AddWithValue("id", user.ID);

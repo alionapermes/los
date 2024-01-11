@@ -1,8 +1,28 @@
 ﻿@page
 @model los.Pages.AdminEditBookModel
 
+<style>
+  table, td, th {
+    border: 1px solid black;
+    padding: 4px;
+  }
+
+  label {
+    padding: 4px;
+  }
+
+  input {
+    padding: 2px;
+  }
+
+  .crud-form {
+    border: 1px solid black;
+    padding: 10px;
+  }
+</style>
+
 <div class="crud-form">
-  <p>Edit book #@Model.InputID</p>
+  <h2>Edit book #@Model.InputID</h2>
   <form method="post">
     <input type="hidden" asp-for="InputID">
     <label>Title:<input type="text" asp-for="InputTitle"></label>
@@ -13,7 +33,7 @@
           string genreLabel = $"{genre.ID}. {genre.Title}";
           bool isSelected = @Model.InputGenreID != null && @Model.InputGenreID == genre.ID;
 
-          <!option value="@genre.ID" @(isSelected ? "selected" : "")>@(genreLabel)</!option>
+          <!option value="@genre.ID" @(isSelected ? "selected" : "") >@genreLabel</!option>
         }
       </select>
     </label>
@@ -23,7 +43,7 @@
           string authorLabel = $"{author.ID}. {author.Fullname}";
           bool isSelected = @Model.InputAuthorID != null && @Model.InputAuthorID == author.ID;
 
-          <!option value="@author.ID" @(isSelected ? "selected" : "")>@authorLabel<!/option>
+          <!option value="@author.ID" @(isSelected ? "selected" : "")>@authorLabel</!option>
         }
       </select>
     </label>

@@ -17,9 +17,4 @@ public class User
   {
     this.ID = id;
   }
-
-  public User(Int64 id)
-  {
-    this.ID = id;
-  }
 }

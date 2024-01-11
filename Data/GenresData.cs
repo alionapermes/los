@@ -44,7 +44,7 @@ public class GenresData
 
   public static void Update(NpgsqlDataSource dataSource, Genre genre)
   {
-    var sql = "UPDATE genre SET title = @title, WHERE id = @id";
+    var sql = "UPDATE genre SET title = @title WHERE id = @id";
 
     using (var cmd = dataSource.CreateCommand(sql)) {
       cmd.Parameters.AddWithValue("id", genre.ID);

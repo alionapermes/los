@@ -14,9 +14,4 @@ public class Genre
   {
     this.ID = id;
   }
-
-  public Genre(Int64 id)
-  {
-    this.ID = id;
-  }
 }

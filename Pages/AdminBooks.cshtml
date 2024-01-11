@@ -50,12 +50,19 @@
   <tr>
     <th>#</th>
     <th>Title</th>
+    <th>Year</th>
+    <th>Genre</th>
+    <th>Author</th>
     <th colspan="2">Action</th>
   </tr>
   @foreach (var book in @Model.GetAllBooks()) {
+    string genreLabel = book.Genre == null ? "<none>" : book.Genre.Title;
   <tr>
     <td>@book.ID</td>
     <td>@book.Title</td>
+    <td>@book.Year</td>
+    <td>@genreLabel</td>
+    <td>@book.Author.Fullname</td>
     <td><a href="/AdminEditBook?id=@book.ID">edit</a></td>
     <td>
       <form method="post">

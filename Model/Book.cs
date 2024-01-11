@@ -21,9 +21,4 @@ public class Book
   {
     this.ID = id;
   }
-
-  public Book(Int64 id)
-  {
-    this.ID = id;
-  }
 }

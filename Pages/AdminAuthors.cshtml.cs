@@ -19,7 +19,7 @@ public class AdminAuthorsModel : PageModel
 
     public AdminAuthorsModel()
     {
-        var connectionString = "Host=localhost;Authorname=postgres;Password=postgres;Database=postgres";
+        var connectionString = "Host=localhost;Username=postgres;Password=postgres;Database=postgres";
         _dataSource = NpgsqlDataSource.Create(connectionString);
     }
 

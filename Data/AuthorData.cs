@@ -44,7 +44,7 @@ public class AuthorsData
 
   public static void Update(NpgsqlDataSource dataSource, Author author)
   {
-    var sql = "UPDATE \"author\" SET fullname = @fullname, WHERE id = @id";
+    var sql = "UPDATE \"author\" SET fullname = @fullname WHERE id = @id";
 
     using (var cmd = dataSource.CreateCommand(sql)) {
       cmd.Parameters.AddWithValue("id", author.ID);

@@ -14,9 +14,4 @@ public class Author
   {
     this.ID = id;
   }
-
-  public Author(Int64 id)
-  {
-    this.ID = id;
-  }
 }

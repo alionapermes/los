@@ -23,12 +23,12 @@ public static class OrdersData
         //          6                    7                     8
         "b.id AS book_id, b.year AS book_year, b.title AS book_title, " +
         // 9        10            11            12
-        "o.id , o.secret_code, o.ordered_on, o.arrives_on " +
-      "FROM \"order\" AS o" +
-      "LEFT JOIN user   AS u ON o.user_id   = u.id " +
-      "LEFT JOIN book   AS b ON o.book_id   = b.id " +
-      "LEFT JOIN author AS a ON b.author_id = a.id " +
-      "LEFT JOIN genre  AS g ON b.genre_id  = g.id";
+        "o.id, o.secret_code, o.ordered_on, o.arrives_on " +
+      "FROM \"order\" AS o " +
+      "LEFT JOIN \"user\" AS u ON o.user_id   = u.id " +
+      "LEFT JOIN book     AS b ON o.book_id   = b.id " +
+      "LEFT JOIN author   AS a ON b.author_id = a.id " +
+      "LEFT JOIN genre    AS g ON b.genre_id  = g.id";
 
     using (var cmd = dataSource.CreateCommand(sql)) {
       using (var reader = cmd.ExecuteReader()) {
@@ -78,11 +78,11 @@ public static class OrdersData
         "b.id AS book_id, b.year AS book_year, b.title AS book_title, " +
         //     9            10            11
         "o.secret_code, o.ordered_on, o.arrives_on " +
-      "FROM \"order\" AS o" +
-      "LEFT JOIN user   AS u ON o.user_id   = u.id " +
-      "LEFT JOIN book   AS b ON o.book_id   = b.id " +
-      "LEFT JOIN author AS a ON b.author_id = a.id " +
-      "LEFT JOIN genre  AS g ON b.genre_id  = g.id " +
+      "FROM \"order\" AS o " +
+      "LEFT JOIN \"user\" AS u ON o.user_id   = u.id " +
+      "LEFT JOIN book     AS b ON o.book_id   = b.id " +
+      "LEFT JOIN author   AS a ON b.author_id = a.id " +
+      "LEFT JOIN genre    AS g ON b.genre_id  = g.id " +
       "WHERE id = @id";
 
     using (var cmd = dataSource.CreateCommand(sql)) {
