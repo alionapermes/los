@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Npgsql;
 
 using los.Models;
-using los.Util;
+using los.Data;
 
 namespace los.Pages;
 
@@ -14,6 +14,9 @@ public class AdminEditBookModel : PageModel
     public string? ErrMsg{get; set;}
     public Int64? InputID{get; set;}
     public string? InputTitle{get; set;}
+    public Int32? InputYear{get; set;}
+    public Int64? InputGenreID{get; set;}
+    public Int64? InputAuthorID{get; set;}
 
     private NpgsqlDataSource _dataSource;
 
@@ -30,10 +33,13 @@ public class AdminEditBookModel : PageModel
             return;
         }
 
-        var book = Data.GetBookByID(_dataSource, id);
+        var book = BooksData.GetByID(_dataSource, id);
 
         InputID = id;
         InputTitle = book.Title;
+        InputYear = book.Year;
+        InputGenreID = book.Genre?.ID;
+        InputAuthorID = book.Author.ID;
     }
 
     public IActionResult OnPost()
@@ -49,12 +55,39 @@ public class AdminEditBookModel : PageModel
             return new EmptyResult();
         }
 
-        Data.UpdateBook(_dataSource, new Book(bookID, InputTitle));
+        Int32 year = InputYear ?? 0;
+        if (year > DateTime.Today.Year) {
+            Console.WriteLine("AdminEditBook.OnPost: incorrect year");
+            return new EmptyResult();
+        }
+
+        Int64 genreID = InputGenreID ?? 0;
+        if (genreID <= 0) {
+            Console.WriteLine("AdminEditBook.OnPost: incorrect genre id");
+            return new EmptyResult();
+        }
+
+        Int64 authorID = InputAuthorID ?? 0;
+        if (authorID <= 0) {
+            Console.WriteLine("AdminEditBook.OnPost: incorrect author id");
+            return new EmptyResult();
+        }
+
+        var genre = new Genre(genreID, string.Empty);
+        var author = new Author(authorID, string.Empty);
+        var book = new Book(bookID, InputTitle, year, author, genre);
+        BooksData.Update(_dataSource, book);
+
         return Redirect("/AdminBooks");
     }
 
-    public List<Book> GetAllBooks()
+    public List<Genre> GetAllGenres()
     {
-        return Data.GetAllBooks(_dataSource);
+        return GenresData.GetAll(_dataSource);
+    }
+
+    public List<Author> GetAllAuthors()
+    {
+        return AuthorsData.GetAll(_dataSource);
     }
 }

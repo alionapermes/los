@@ -6,6 +6,27 @@
   <form method="post">
     <input type="hidden" asp-for="InputID">
     <label>Title:<input type="text" asp-for="InputTitle"></label>
+    <label>Year:<input type="number" asp-for="InputYear"></label>
+    <label>Genre:
+      <select asp-for="InputGenreID">
+        @foreach (var genre in @Model.GetAllGenres()) {
+          string genreLabel = $"{genre.ID}. {genre.Title}";
+          bool isSelected = @Model.InputGenreID != null && @Model.InputGenreID == genre.ID;
+
+          <!option value="@genre.ID" @(isSelected ? "selected" : "")>@(genreLabel)</!option>
+        }
+      </select>
+    </label>
+    <label>Author:
+      <select asp-for="InputAuthorID">
+        @foreach (var author in @Model.GetAllAuthors()) {
+          string authorLabel = $"{author.ID}. {author.Fullname}";
+          bool isSelected = @Model.InputAuthorID != null && @Model.InputAuthorID == author.ID;
+
+          <!option value="@author.ID" @(isSelected ? "selected" : "")>@authorLabel<!/option>
+        }
+      </select>
+    </label>
     <input type="submit" value="save">
   </form>
 </div>

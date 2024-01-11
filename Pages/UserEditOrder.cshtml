@@ -2,13 +2,18 @@
 @model los.Pages.UserEditOrderModel
 
 <div class="crud-form">
-  <h2>Edit order #@Request.Query["id"]</h2>
+  <h2>Edit order #@Model.InputID</h2>
   <form method="post">
-    @* <label>ID:<input type="text" asp-for="InputUpdateID"></label>
-    <label>Название:<input type="text" asp-for="InputUpdateTitle"></label>
-    <label>Автор:<input type="text" asp-for="InputUpdateAuthor"></label>
-    <label>Жанр:<input type="text" asp-for="InputUpdateGenre"></label>
-    <input type="hidden" asp-for="LabAction" value="update"> *@
-    <input type="submit" value="Изменить">
+    <input type="hidden" asp-for="InputID">
+    <label>Book:
+      <select asp-for="InputBookID">
+        @foreach (var book in @Model.GetAllBooks()) {
+          bool isSelected = @Model.InputBookID != null && @Model.InputBookID == book.ID;
+          <!option value="@book.ID" @(isSelected ? "selected" : "")>@book.Title</!option>
+        }
+      </select>
+    </label>
+    <label>Arriving date:<input type="text" asp-for="InputArrivesOn" value="@Model.InputArrivesOn"></label>
+    <input type="submit" value="save">
   </form>
 </div>

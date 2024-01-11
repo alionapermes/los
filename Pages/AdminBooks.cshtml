@@ -25,7 +25,22 @@
   <p>Add new book</p>
   <form method="post">
     <input type="hidden" asp-for="ActionType" value="insert">
-    <label>Название:<input type="text" asp-for="InputTitle"></label>
+    <label>Title:<input type="text" asp-for="InputTitle"></label>
+    <label>Year:<input type="number" asp-for="InputYear"></label>
+    <label>Genre:
+      <select asp-for="InputGenreID">
+        @foreach (var genre in @Model.GetAllGenres()) {
+        <option value="@genre.ID">@genre.Title</option>
+        }
+      </select>
+    </label>
+    <label>Author:
+      <select asp-for="InputAuthorID">
+        @foreach (var author in @Model.GetAllAuthors()) {
+        <option value="@author.ID">@author.Fullname</option>
+        }
+      </select>
+    </label>
     <input type="submit" value="add">
   </form>
 </div>

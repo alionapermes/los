@@ -1,0 +1,54 @@
+@page
+@model los.Pages.AdminGenresModel
+
+<style>
+  table, td, th {
+    border: 1px solid black;
+    padding: 4px;
+  }
+
+  label {
+    padding: 4px;
+  }
+
+  input {
+    padding: 2px;
+  }
+
+  .crud-form {
+    border: 1px solid black;
+    padding: 10px;
+  }
+</style>
+
+<div class="crud-form">
+  <p>Add new genre</p>
+  <form method="post">
+    <input type="hidden" asp-for="ActionType" value="insert">
+    <label>Title:<input type="text" asp-for="InputTitle"></label>
+    <input type="submit" value="add">
+  </form>
+</div>
+
+<h2>All genres</h2>
+<table>
+  <tr>
+    <th>#</th>
+    <th>Title</th>
+    <th colspan="2">Action</th>
+  </tr>
+  @foreach (var genre in @Model.GetAllGenres()) {
+  <tr>
+    <td>@genre.ID</td>
+    <td>@genre.Title</td>
+    <td><a href="/AdminEditGenre?id=@genre.ID">edit</a></td>
+    <td>
+      <form method="post">
+        <input type="hidden" asp-for="ActionType" value="remove">
+        <input type="hidden" asp-for="InputID" value="@genre.ID">
+        <input type="submit" value="remove">
+      </form>
+    </td>
+  </tr>
+  }
+</table>

@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Npgsql;
 
 using los.Models;
-using los.Util;
+using los.Data;
+using System.Security.Cryptography.X509Certificates;
 
 namespace los.Pages;
 
@@ -15,8 +16,9 @@ public class AdminEditOrderModel : PageModel
 
     public string? ErrMsg{get; set;}
     public Int64? InputID{get; set;}
-    public string? InputUserName{get; set;}
+    public Int64? InputUserID{get; set;}
     public Int64? InputBookID{get; set;}
+    public string? InputSecretCode{get; set;}
     public string? InputOrderedOn{get; set;}
     public string? InputArrivesOn{get; set;}
 
@@ -35,11 +37,12 @@ public class AdminEditOrderModel : PageModel
             return;
         }
 
-        var order = Data.GetOrderByID(_dataSource, id);
+        var order = OrdersData.GetByID(_dataSource, id);
 
         InputID = id;
-        InputUserName = order.UserName;
+        InputUserID = order.User.ID;
         InputBookID = order.Book.ID;
+        InputSecretCode = order.SecretCode;
         InputOrderedOn = order.OrderedOn.ToString(DateFormat);
         InputArrivesOn = order.ArrivesOn.ToString(DateFormat);
     }
@@ -52,14 +55,22 @@ public class AdminEditOrderModel : PageModel
             return new EmptyResult();
         }
 
+        var order = OrdersData.GetByID(_dataSource, orderID);
+
         Int64 bookID = InputBookID ?? 0;
         if (bookID <= 0) {
-            Console.WriteLine("AdminEditOrder.OnPost: incorrect book_id");
+            Console.WriteLine("AdminEditOrder.OnPost: incorrect book id");
             return new EmptyResult();
         }
 
-        if (string.IsNullOrEmpty(InputUserName)) {
-            Console.WriteLine("AdminEditOrder.OnPost: empty username");
+        Int64 userID = InputUserID ?? 0;
+        if (userID <= 0) {
+            Console.WriteLine("AdminEditOrder.OnPost: incorrect user id");
+            return new EmptyResult();
+        }
+
+        if (string.IsNullOrEmpty(InputSecretCode)) {
+            Console.WriteLine("AdminEditOrder.OnPost: empty secret code");
             return new EmptyResult();
         }
 
@@ -89,15 +100,23 @@ public class AdminEditOrderModel : PageModel
             return new EmptyResult();
         }
 
-        var book = new Book(bookID, string.Empty);
-        var order = new Order(orderID, InputUserName, book, orderedOn, arrivesOn);
-        Data.UpdateOrder(_dataSource, order);
+        order.Book = BooksData.GetByID(_dataSource, bookID);
+        order.User = UsersData.GetByID(_dataSource, userID);
+        order.SecretCode = InputSecretCode;
+        order.OrderedOn = orderedOn;
+        order.ArrivesOn = arrivesOn;
+        OrdersData.Update(_dataSource, order);
 
         return Redirect("/AdminOrders");
     }
 
     public List<Book> GetAllBooks()
     {
-        return Data.GetAllBooks(_dataSource);
+        return BooksData.GetAll(_dataSource);
+    }
+
+    public List<User> GetAllUsers()
+    {
+        return UsersData.GetAll(_dataSource);
     }
 }

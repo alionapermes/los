@@ -5,15 +5,31 @@
   <h2>Edit order #@Model.InputID</h2>
   <form method="post">
     <input type="hidden" asp-for="InputID">
-    <label>User name:<input type="text" asp-for="InputUserName"></label>
+    <label>User:
+      <select asp-for="InputBookID">
+        @foreach (var user in @Model.GetAllUsers()) {
+          bool isSelected = @Model.InputUserID != null && @Model.InputUserID == user.ID;
+          string userLabel = $"{user.ID}. {user.Name}";
+
+          <!option value="@user.ID" @(isSelected ? "selected" : "")>@userLabel</!option>
+        }
+      </select>
+    </label>
     <label>Book:
       <select asp-for="InputBookID">
         @foreach (var book in @Model.GetAllBooks()) {
           bool isSelected = @Model.InputBookID != null && @Model.InputBookID == book.ID;
-          <!option value="@book.ID" @(isSelected ? "selected" : "")>@book.Title</!option>
+
+          string bookLabel = $"{book.ID}. {book.Title}, {book.Author}";
+          if (book.Genre != null) {
+            bookLabel += $" ({book.Genre})";
+          }
+
+          <!option value="@book.ID" @(isSelected ? "selected" : "")>@bookLabel</!option>
         }
       </select>
     </label>
+    <label>Secret code:<input type="text" asp-for="InputSecretCode" value="@Model.InputSecretCode"></label>
     <label>Ordering date:<input type="text" asp-for="InputOrderedOn" value="@Model.InputOrderedOn"></label>
     <label>Arriving date:<input type="text" asp-for="InputArrivesOn" value="@Model.InputArrivesOn"></label>
     <input type="submit" value="save">

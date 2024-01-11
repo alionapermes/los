@@ -28,14 +28,25 @@
   }
   <form method="post">
     <input type="hidden" asp-for="ActionType" value="insert">
-    <label>User name:<input type="text" asp-for="InputUserName"></label>
-    <label>Book:
-      <select asp-for="InputBookID">
-        @foreach (var book in @Model.GetAllBooks()) {
-        <option value="@book.ID">@book.Title</option>
+    <label>User:
+      <select asp-for="InputUserID">
+        @foreach (var user in @Model.GetAllUsers()) {
+        <option value="@user.ID">@user.ID - @user.Name</option>
         }
       </select>
     </label>
+    <label>Book:
+      <select asp-for="InputBookID">
+        @foreach (var book in @Model.GetAllBooks()) {
+          string bookLabel = $"{book.ID}. {book.Title}, {book.Author}";
+          if (book.Genre != null) {
+            bookLabel += $" ({book.Genre})";
+          }
+          <option value="@book.ID">@bookLabel</option>
+        }
+      </select>
+    </label>
+    <label>Secret code:<input type="text" asp-for="InputSecretCode"></label>
     <label>Ordering date:<input type="text" asp-for="InputOrderedOn"></label>
     <label>Arriving date:<input type="text" asp-for="InputArrivesOn"></label>
     <input type="submit" value="add">
@@ -48,15 +59,24 @@
     <th>#</th>
     <th>User</th>
     <th>Book</th>
+    <th>Secret code</th>
     <th>Ordered on</th>
     <th>Arrives on</th>
     <th colspan="2">Action</th>
   </tr>
   @foreach (var order in @Model.GetAllOrders()) {
+    string userLabel = $"{order.ID}. {order.User}";
+
+    var book = order.Book;
+    string bookLabel = $"{book.ID}. {book.Title}, {book.Author}";
+    if (book.Genre != null) {
+      bookLabel += $" ({book.Genre})";
+    }
   <tr>
     <td>@order.ID</td>
-    <td>@order.UserName</td>
-    <td>@order.Book.Title</td>
+    <td>@userLabel</td>
+    <td>@bookLabel</td>
+    <td>@order.SecretCode</td>
     <td>@order.OrderedOn.ToString(@Model.DateFormat)</td>
     <td>@order.ArrivesOn.ToString(@Model.DateFormat)</td>
     <td><a href="/AdminEditOrder?id=@order.ID">edit</a></td>

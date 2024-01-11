@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Npgsql;
 
 using los.Models;
-using los.Util;
+using los.Data;
 
 namespace los.Pages;
 
@@ -16,8 +16,9 @@ public class AdminOrdersModel : PageModel
     public string? ActionType{get; set;}
     public string? ErrMsg{get; set;}
     public Int64? InputID{get; set;}
-    public string? InputUserName{get; set;}
+    public Int64? InputUserID{get; set;}
     public Int64? InputBookID{get; set;}
+    public string? InputSecretCode{get; set;}
     public string? InputOrderedOn{get; set;}
     public string? InputArrivesOn{get; set;}
 
@@ -39,26 +40,37 @@ public class AdminOrdersModel : PageModel
         }
     }
 
-    public List<Book> GetAllBooks()
-    {
-        return Data.GetAllBooks(_dataSource);
-    }
-
     public List<Order> GetAllOrders()
     {
-        return Data.GetAllOrders(_dataSource);
+        return OrdersData.GetAll(_dataSource);
+    }
+
+    public List<User> GetAllUsers()
+    {
+        return UsersData.GetAll(_dataSource);
+    }
+
+    public List<Book> GetAllBooks()
+    {
+        return BooksData.GetAll(_dataSource);
     }
 
     public void addOrder()
     {
         Int64 bookID = InputBookID ?? 0;
         if (bookID < 0) {
-            Console.WriteLine("addOrder: incorrect book choosen");
+            Console.WriteLine("addOrder: incorrect book id");
             return;
         }
 
-        if (string.IsNullOrEmpty(InputUserName)) {
-            Console.WriteLine("addOrder: incorrect username");
+        Int64 userID = InputUserID ?? 0;
+        if (userID < 0) {
+            Console.WriteLine("addOrder: incorrect user id");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(InputSecretCode)) {
+            Console.WriteLine("addOrder: incorrect secret code");
             return;
         }
 
@@ -86,10 +98,11 @@ public class AdminOrdersModel : PageModel
             return;
         }
 
-        var book = new Book(bookID, string.Empty);
-        var order = new Order(InputUserName, book, orderedOn, arrivesOn);
+        var book = new Book(bookID);
+        var user = new User(userID);
+        var order = new Order(InputSecretCode, user, book, orderedOn, arrivesOn);
 
-        Data.AddOrder(_dataSource, order);
+        OrdersData.Add(_dataSource, order);
     }
 
     public void removeOrder()

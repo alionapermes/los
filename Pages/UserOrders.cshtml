@@ -75,7 +75,7 @@
   @foreach (var order in @Model.GetAllOrders()) {
   <tr>
     <td>@order.ID</td>
-    <td>@order.Book</td>
+    <td>@order.Book.Title</td>
     <td>@order.OrderedOn.ToString("dd.MM.yy")</td>
     <td>@order.ArrivesOn.ToString("dd.MM.yy")</td>
     <td><a href="/UserEditOrder?id=@order.ID">edit</a></td>

@@ -1,0 +1,54 @@
+@page
+@model los.Pages.AdminUsersModel
+
+<style>
+  table, td, th {
+    border: 1px solid black;
+    padding: 4px;
+  }
+
+  label {
+    padding: 4px;
+  }
+
+  input {
+    padding: 2px;
+  }
+
+  .crud-form {
+    border: 1px solid black;
+    padding: 10px;
+  }
+</style>
+
+<div class="crud-form">
+  <p>Add new user</p>
+  <form method="post">
+    <input type="hidden" asp-for="ActionType" value="insert">
+    <label>Name:<input type="text" asp-for="InputName"></label>
+    <input type="submit" value="add">
+  </form>
+</div>
+
+<h2>All users</h2>
+<table>
+  <tr>
+    <th>#</th>
+    <th>Name</th>
+    <th colspan="2">Action</th>
+  </tr>
+  @foreach (var user in @Model.GetAllUsers()) {
+  <tr>
+    <td>@user.ID</td>
+    <td>@user.Name</td>
+    <td><a href="/AdminEditUser?id=@user.ID">edit</a></td>
+    <td>
+      <form method="post">
+        <input type="hidden" asp-for="ActionType" value="remove">
+        <input type="hidden" asp-for="InputID" value="@user.ID">
+        <input type="submit" value="remove">
+      </form>
+    </td>
+  </tr>
+  }
+</table>

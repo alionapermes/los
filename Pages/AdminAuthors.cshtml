@@ -1,0 +1,54 @@
+@page
+@model los.Pages.AdminAuthorsModel
+
+<style>
+  table, td, th {
+    border: 1px solid black;
+    padding: 4px;
+  }
+
+  label {
+    padding: 4px;
+  }
+
+  input {
+    padding: 2px;
+  }
+
+  .crud-form {
+    border: 1px solid black;
+    padding: 10px;
+  }
+</style>
+
+<div class="crud-form">
+  <p>Add new author</p>
+  <form method="post">
+    <input type="hidden" asp-for="ActionType" value="insert">
+    <label>Fullname:<input type="text" asp-for="InputName"></label>
+    <input type="submit" value="add">
+  </form>
+</div>
+
+<h2>All authors</h2>
+<table>
+  <tr>
+    <th>#</th>
+    <th>Fullname</th>
+    <th colspan="2">Action</th>
+  </tr>
+  @foreach (var author in @Model.GetAllAuthors()) {
+  <tr>
+    <td>@author.ID</td>
+    <td>@author.Fullname</td>
+    <td><a href="/AdminEditAuthor?id=@author.ID">edit</a></td>
+    <td>
+      <form method="post">
+        <input type="hidden" asp-for="ActionType" value="remove">
+        <input type="hidden" asp-for="InputID" value="@author.ID">
+        <input type="submit" value="remove">
+      </form>
+    </td>
+  </tr>
+  }
+</table>
