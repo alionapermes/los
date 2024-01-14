@@ -21,47 +21,29 @@
   }
 </style>
 
-@* <div class="text-center">
-  <h4>База книг в библиотеке</h1>
-  <p><a href="?download_xml=1" download>Скачать таблицу в xml</a></p>
-  <p><a href="?remove_all=1">Очистить таблицу</a></p>
-  <form method="post" enctype="multipart/form-data">
-    <input type="file" asp-for="Upload">
-    <input type="submit" value="Восстановить таблицу из xml">
+<div class="crud-form">
+  <p>Order a book</p>
+  @if (!string.IsNullOrEmpty(@Model.ErrMsg)) {
+    <p>Error: @Model.ErrMsg</p>
+  }
+  <form method="post">
+    <input type="hidden" asp-for="ActionType" value="insert">
+    <input type="hidden" asp-for="InputUserID" value="@Model.InputUserID">
+    <label>Book:
+      <select asp-for="InputBookID">
+        @foreach (var book in @Model.GetAllBooks()) {
+          string bookLabel = $"{book.Title}, {book.Author.Fullname}";
+          if (book.Genre != null) {
+            bookLabel += $" ({book.Genre.Title})";
+          }
+          <option value="@book.ID">@bookLabel</option>
+        }
+      </select>
+    </label>
+    <label>Arriving date:<input type="text" asp-for="InputArrivesOn"></label>
+    <input type="submit" value="add">
   </form>
 </div>
-
-<div class="crud-form">
-  <p>Форма добавления</p>
-  <form method="post">
-    <label>Название:<input type="text" asp-for="InputInsertTitle"></label>
-    <label>Автор:<input type="text" asp-for="InputInsertAuthor"></label>
-    <label>Жанр:<input type="text" asp-for="InputInsertGenre"></label>
-    <input type="hidden" asp-for="LabAction" value="insert">
-    <input type="submit" value="Добавить">
-  </form>
-</div>
-
-<div class="crud-form">
-  <p>Форма изменения</p>
-  <form method="post">
-    <label>ID:<input type="text" asp-for="InputUpdateID"></label>
-    <label>Название:<input type="text" asp-for="InputUpdateTitle"></label>
-    <label>Автор:<input type="text" asp-for="InputUpdateAuthor"></label>
-    <label>Жанр:<input type="text" asp-for="InputUpdateGenre"></label>
-    <input type="hidden" asp-for="LabAction" value="update">
-    <input type="submit" value="Изменить">
-  </form>
-</div>
-
-<div class="crud-form">
-  <p>Форма Удаления</p>
-  <form method="post">
-    <label>ID:<input type="text" asp-for="InputDeleteID"></label>
-    <input type="hidden" asp-for="LabAction" value="delete">
-    <input type="submit" value="Удалить">
-  </form>
-</div> *@
 
 <h2>My orders</h2>
 <table>
@@ -72,14 +54,18 @@
     <th>Arrives On</th>
     <th colspan="2">Action</th>
   </tr>
-  @foreach (var order in @Model.GetAllOrders()) {
+  @foreach (var order in @Model.GetMyOrders()) {
   <tr>
     <td>@order.ID</td>
     <td>@order.Book.Title</td>
     <td>@order.OrderedOn.ToString("dd.MM.yy")</td>
     <td>@order.ArrivesOn.ToString("dd.MM.yy")</td>
-    <td><a href="/UserEditOrder?id=@order.ID">edit</a></td>
-    <td><a href="/UserCancelOrder?id=@order.ID">cancel</a></td>
+    <form method="post">
+      <input type="hidden" asp-for="ActionType" value="cancel">
+      <input type="hidden" asp-for="InputOrderID" value="@order.ID">
+      <td><input type="text" asp-for="InputSecretCode"></td>
+      <td><input type="submit" value="cancel"></td>
+    </form>
   </tr>
   }
 </table>

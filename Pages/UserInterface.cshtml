@@ -1,0 +1,32 @@
+@page
+@model los.Pages.UserInterfaceModel
+
+<style>
+  table, td, th {
+    border: 1px solid black;
+    padding: 4px;
+  }
+
+  label {
+    padding: 4px;
+  }
+
+  input {
+    padding: 2px;
+  }
+
+  .crud-form {
+    border: 1px solid black;
+    padding: 10px;
+  }
+</style>
+
+<div class="crud-form">
+  <h2>List my orders</h2>
+  <form method="post">
+    <label>Your name:
+      <input type="text" asp-for="InputUserName">
+    </label>
+    <input type="submit" value="go">
+  </form>
+</div>

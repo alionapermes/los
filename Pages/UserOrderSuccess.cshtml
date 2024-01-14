@@ -1,0 +1,29 @@
+@page
+@model los.Pages.UserOrderSuccessModel
+
+<style>
+  table, td, th {
+    border: 1px solid black;
+    padding: 4px;
+  }
+
+  label {
+    padding: 4px;
+  }
+
+  input {
+    padding: 2px;
+  }
+
+  .crud-form {
+    border: 1px solid black;
+    padding: 10px;
+  }
+</style>
+
+<div class="crud-form">
+  <h2>Success</h2>
+  <h4>Order #@Model.OrderID</h4>
+  <h4>Secret code: @Model.SecretCode</h4>
+  <a href="/UserInterface">Go To User Interface</a>
+</div>

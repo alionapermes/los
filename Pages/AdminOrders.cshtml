@@ -38,15 +38,14 @@
     <label>Book:
       <select asp-for="InputBookID">
         @foreach (var book in @Model.GetAllBooks()) {
-          string bookLabel = $"{book.ID}. {book.Title}, {book.Author}";
+          string bookLabel = $"{book.ID}. {book.Title}, {book.Author.Fullname}";
           if (book.Genre != null) {
-            bookLabel += $" ({book.Genre})";
+            bookLabel += $" ({book.Genre.Title})";
           }
           <option value="@book.ID">@bookLabel</option>
         }
       </select>
     </label>
-    <label>Secret code:<input type="text" asp-for="InputSecretCode"></label>
     <label>Ordering date:<input type="text" asp-for="InputOrderedOn"></label>
     <label>Arriving date:<input type="text" asp-for="InputArrivesOn"></label>
     <input type="submit" value="add">
@@ -68,9 +67,9 @@
     string userLabel = $"{order.ID}. {order.User}";
 
     var book = order.Book;
-    string bookLabel = $"{book.ID}. {book.Title}, {book.Author}";
+    string bookLabel = $"{book.ID}. {book.Title}, {book.Author.Fullname}";
     if (book.Genre != null) {
-      bookLabel += $" ({book.Genre})";
+      bookLabel += $" ({book.Genre.Title})";
     }
   <tr>
     <td>@order.ID</td>

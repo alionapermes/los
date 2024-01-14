@@ -42,6 +42,22 @@ public class UsersData
     return null;
   }
 
+  public static User FindByName(NpgsqlDataSource dataSource, string name)
+  {
+    var sql = "SELECT id FROM \"user\" WHERE name = @name";
+
+    using (var cmd = dataSource.CreateCommand(sql)) {
+      cmd.Parameters.AddWithValue("name", name);
+      using (var reader = cmd.ExecuteReader()) {
+        if (reader.Read()) {
+          return new User(reader.GetInt64(0), name);
+        }
+      }
+    }
+
+    return null;
+  }
+
   public static void Update(NpgsqlDataSource dataSource, User user)
   {
     var sql = "UPDATE \"user\" SET name = @name WHERE id = @id";
@@ -53,13 +69,14 @@ public class UsersData
     }
   }
 
-  public static void Add(NpgsqlDataSource dataSource, User user)
+  public static Int64 Add(NpgsqlDataSource dataSource, User user)
   {
-    var sql = "INSERT INTO \"user\" (title) VALUES(@name)";
+    var sql = "INSERT INTO \"user\" (name) VALUES(@name) RETURNING id";
 
     using (var cmd = dataSource.CreateCommand(sql)) {
       cmd.Parameters.AddWithValue("name", user.Name);
-      cmd.ExecuteNonQuery();
+      var id = cmd.ExecuteScalar();
+      return Convert.ToInt64(id);
     }
   }
 

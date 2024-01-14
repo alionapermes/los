@@ -18,7 +18,6 @@ public class AdminOrdersModel : PageModel
     public Int64? InputID{get; set;}
     public Int64? InputUserID{get; set;}
     public Int64? InputBookID{get; set;}
-    public string? InputSecretCode{get; set;}
     public string? InputOrderedOn{get; set;}
     public string? InputArrivesOn{get; set;}
 
@@ -72,11 +71,6 @@ public class AdminOrdersModel : PageModel
             return;
         }
 
-        if (string.IsNullOrEmpty(InputSecretCode)) {
-            Console.WriteLine("addOrder: incorrect secret code");
-            return;
-        }
-
         DateTime orderedOn;
         try {
             orderedOn = string.IsNullOrEmpty(InputOrderedOn)
@@ -103,7 +97,7 @@ public class AdminOrdersModel : PageModel
 
         book = BooksData.GetByID(_dataSource, bookID);
         user = UsersData.GetByID(_dataSource, userID);
-        var order = new Order(InputSecretCode, user, book, orderedOn, arrivesOn);
+        var order = new Order(user, book, orderedOn, arrivesOn);
 
         OrdersData.Add(_dataSource, order);
     }

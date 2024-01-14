@@ -25,7 +25,7 @@ public class BooksData
 
     using (var cmd = dataSource.CreateCommand(sql)) {
       using (var reader = cmd.ExecuteReader()) {
-        if (reader.Read()) {
+        while (reader.Read()) {
           var authorID = reader.GetInt64(0);
           var authorName = reader.GetString(1);
           var author = new Author(authorID, authorName);

@@ -10,13 +10,11 @@ public class Order
   public DateTime ArrivesOn{get; set;} = new();
 
   public Order(
-    string secretCode,
     User user,
     Book book,
     DateTime orderedOn,
     DateTime arrivesOn
   ) {
-    this.SecretCode = secretCode;
     this.User = user;
     this.Book = book;
     this.OrderedOn = orderedOn;
@@ -32,7 +30,8 @@ public class Order
     Book book,
     DateTime orderedOn,
     DateTime arrivedOn
-  ) : this(secretCode, user, book, orderedOn, arrivedOn) {
+  ) : this(user, book, orderedOn, arrivedOn) {
     this.ID = id;
+    this.SecretCode = secretCode;
   }
 }
