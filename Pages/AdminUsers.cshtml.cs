@@ -45,12 +45,7 @@ public class AdminUsersModel : PageModel
             return;
         }
 
-        var sql = "INSERT INTO user (name) VALUES (@name)";
-
-        using (var cmd = _dataSource.CreateCommand(sql)) {
-            cmd.Parameters.AddWithValue("name", InputName);
-            cmd.ExecuteNonQuery();
-        }
+        UsersData.Add(_dataSource, new User(InputName));
     }
 
     public void removeUser()
@@ -61,11 +56,6 @@ public class AdminUsersModel : PageModel
             return;
         }
 
-        var sql = "DELETE FROM user WHERE id = @id";
-
-        using (var cmd = _dataSource.CreateCommand(sql)) {
-            cmd.Parameters.AddWithValue("id", userID);
-            cmd.ExecuteNonQuery();
-        }
+        UsersData.DeleteByID(_dataSource, userID);
     }
 }
